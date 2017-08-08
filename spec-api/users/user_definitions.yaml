@@ -1,0 +1,73 @@
+swagger: '2.0'
+
+info:
+  title: User Definitions
+  description: These describe the data for users
+  version: "1.0.0"
+
+paths: {}
+
+definitions:
+  AllReadableUserInfo:
+    allOf:
+      - $ref: '#/definitions/UserPublicInfo'
+      - $ref: '#/definitions/UserProtectedInfo'
+      - $ref: '#/definitions/UserPrivateInfo'
+  AllWritableUserInfo:
+    allOf:
+      - $ref: '#/definitions/UserPublicInfo'
+      - $ref: '#/definitions/UserProtectedInfo'
+      - $ref: '#/definitions/UserPrivateInfo'
+      - $ref: '#/definitions/UserPassword'
+  UserPassword:
+    title: A User Password
+    description: This password is writable only , and can only be set
+    properties:
+      password:
+        description: The password lets users login to the api service as well as web services supported by this api
+        type: string
+        pattern: '[a-zA-Z0-9!@#\$%\^&\*\?]{8,16}'
+        minLength: 8
+        maxLength: 16
+        example: bats?No!1235
+  UserPrivateInfo:
+    title: Private User Information
+    description: Only the user or authorized people will ever see this
+    properties:
+      notes:
+        description: A list of thoughts and notes
+        type: string
+  UserProtectedInfo:
+    title: Protected UserInformation
+    description: Friends have access to this information
+    properties:
+      friendList:
+        description: A list of friend information, right how just a string will be an array later
+        type: string
+  UserPublicInfo:
+    title: Public User Information
+    description: Anyone can see this information at all times
+    required:
+      - username
+    properties:
+      firstName:
+        description: first name
+        type: string
+        example: John
+      lastName:
+        description: last name
+        type: string
+        example: Doe
+      username:
+        description: Username used to connect to the service
+        type: string
+        pattern: '[a-z0-9]{8,64}'
+        minLength: 8
+        maxLength: 64
+        example: john1doe6
+      lastTimeOnline:
+        description: The last time this person was connected to the service as a
+        type: string
+        format: date-time
+        readOnly: true
+        example: 2016-06-10T12:36:58.014Z

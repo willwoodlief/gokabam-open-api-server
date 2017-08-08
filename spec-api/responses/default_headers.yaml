@@ -1,0 +1,20 @@
+swagger: '2.0'
+
+info:
+  title: Default Headers for any response
+  description: contains rate limiting info headers
+  version: "1.0.0"
+
+responses:
+  DefaultHeaders:
+    description: A dummy response to define default header
+    headers:
+      X-Rate-Limit-Remaining:
+        description: How many calls consumer can do!
+        type: integer
+      X-Rate-Limit-Reset:
+        description: When rate limit will be reset in seconds from now, not a timestamp
+        type: integer
+      X-Rate-Limit-Limit:
+        description: What is the limit per day
+        type: integer

@@ -1,0 +1,62 @@
+swagger: '2.0'
+
+info:
+  title: Calls to Me
+  description: These are the paths and definitions of the me calls
+  version: "1.0.0"
+
+paths:
+  /me:
+      parameters:
+        - $ref: '../index/parameters.yaml#/parameters/acceptLanguage'
+      get:
+        summary: Gets Informaton about my account
+        description: returns all information about this > including private , protected, and public.
+        operationId: readMe
+        tags:
+          - users
+          - me
+        parameters:
+          - $ref: '../index/parameters.yaml#/parameters/pageSize'
+          - $ref: '../index/parameters.yaml#/parameters/pageNumber'
+        responses:
+          '200':
+            description: Get My Information
+            schema:
+              $ref: 'user_definitions.yaml#/definitions/AllReadableUserInfo'
+            headers:
+              $ref: '../responses/default_headers.yaml#/responses/DefaultHeaders/headers'
+          '500':
+            $ref: '../responses/standard_responses.yaml#/responses/Standard500ErrorResponse'
+          default:
+            $ref: '../responses/standard_responses.yaml#/responses/TotallyUnexpectedResponse'
+        security:
+          - OauthSecurity:
+            - read:me
+      post:
+        summary: Updates Information about my account
+        description: Can update all basic user information about this account, includes public , private and protected
+        operationId: writeMe
+        tags:
+        - users
+        - me
+        parameters:
+          - name: userInfo
+            in: body
+            description: Data the user can update
+            required: true
+            schema:
+              $ref: 'user_definitions.yaml#/definitions/AllWritableUserInfo'
+        responses:
+          '204':
+            $ref: '../responses/standard_responses.yaml#/responses/Standard204UpdateOkResponse'
+          '400':
+            $ref: '../responses/standard_responses.yaml#/responses/Standard400UpdateErrorResponse'
+          '500':
+            $ref: '../responses/standard_responses.yaml#/responses/Standard500ErrorResponse'
+          default:
+            $ref: '../responses/standard_responses.yaml#/responses/TotallyUnexpectedResponse'
+        security:
+          - OauthSecurity:
+            - write:me
+

@@ -1,0 +1,83 @@
+swagger: '2.0'
+
+info:
+  description:
+    $ref: 'index/description.md'
+  version: "1.0.0"
+  title: GoKabam API
+  contact:
+    name: Will Woodlief
+    url: https://gokabam.com
+    email: willwoodlief@gokabam.com
+
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+
+host: api.gokabam.com
+basePath: /1.0.0
+schemes:
+ - https
+
+consumes:
+  - application/json
+  - application/x-yaml
+  - application/xml
+produces:
+  - application/json
+  - application/x-yaml
+  - application/xml
+
+
+
+securityDefinitions:
+  OauthSecurity:
+    description:  Oauth security system. All operations are used with it
+    type: oauth2
+    flow: accessCode
+    authorizationUrl: 'https://oauth.simple.api/oauth/authorize'
+    tokenUrl: 'https://oauth.simple.api/oauth/token'
+    scopes:
+      write:user: write user information that is not your user
+      read:user: read user information that is not yours
+      read:me: read my information, all users are automatically granted this
+      write:me: write my information, all users are automatically granted this
+
+
+security:
+  - OauthSecurity: []
+
+
+tags:
+  - name: users
+    description: |
+      [Operations/information about regular users](http://example.com)
+  - name: me
+    description: An operation just effecting the logged in user
+  - name: companies
+    description: Company Info, Settings and Finances. Some company info is public
+  - name: sellers
+    description: Salesmen and selling activities. Includes customer relations for customers. Includes sales flow
+  - name: self
+    description: an operation which gets information only for the account that this call has credentials for, includes private and public information
+  - name: public
+    description: Information which anyone can see. If it does not have this tag, then it requires credentials to see
+  - name: customer_services
+    description: Controls Regular Users,Salesmen and Companies. Can change any setting for regular accounts
+  - name: higher_admins
+    description: Controls privileged Accounts (for example this company is also a regular company in the api but private info and settings can only be accessed using a higher_admin privilege)
+  - name: root
+    description: Ultimate authority. Controls who is on the higher admin list. API settings in general controlled from here
+
+paths:
+  /me:
+    $ref: 'users/me.yaml#/paths/~1me'
+
+
+responses: {}
+
+
+
+
+definitions: {}

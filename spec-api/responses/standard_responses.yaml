@@ -1,0 +1,123 @@
+swagger: '2.0'
+
+info:
+  title: Standard Responses used through the API
+  description: These are not specific to any call
+  version: "1.0.0"
+
+paths: {}
+
+responses:
+  Standard204UpdateOkResponse:
+      description: The items were updated
+      headers:
+        $ref: 'default_headers.yaml#/responses/DefaultHeaders/headers'
+      schema:
+        $ref: '#/definitions/StandardResponseStatus'
+  Standard400UpdateErrorResponse:
+      description: The items could not be updated
+      headers:
+        $ref: 'default_headers.yaml#/responses/DefaultHeaders/headers'
+      schema:
+        $ref: '#/definitions/StandardResponseStatus'
+  Standard500ErrorResponse:
+    description: An unexpected error occured!
+    headers:
+      $ref: 'default_headers.yaml#/responses/DefaultHeaders/headers'
+    schema:
+      $ref: '#/definitions/StandardResponseStatus'
+  TotallyUnexpectedResponse:
+    description: A totally unexpected response
+    headers:
+      $ref: 'default_headers.yaml#/responses/DefaultHeaders/headers'
+    schema:
+      $ref: '#/definitions/StandardResponseStatus'
+
+
+definitions:
+  StandardResponseStatus:
+      title: Standard Response Status
+      description: Gives an overview and can also list specific issues or data
+      required:
+        - status
+        - messages
+      properties:
+        status:
+          description: whether the operation succeeded or failed
+          type: boolean
+          default: true
+          example: true
+        messages:
+          $ref: '#/definitions/StatusMessages'
+  StatusMessages:
+    title: Status Messages
+    readOnly: true
+    description: An array of one or more descriptions about the operation
+    type: array
+    items:
+      type: object
+      required:
+        - status
+        - code
+        - message
+      properties:
+        status:
+          description: |
+            A short human readable code
+
+            | Name | Definition |
+            | ------- | -------- |
+            | OK   | Operation was sucessful    |
+            | WARNING   | warns of deprecition , or impropper but allowed use    |
+            | ERROR   | Something broke    |
+            | INFO   | Just a message or a general non warning notice    |
+
+            Text attributes _italic_, *italic*, __bold__, **bold**, `monospace`.
+            Horizontal rule
+
+            ---
+
+            Bullet list
+
+              * apples
+              * oranges
+              * pears
+
+            Numbered list
+
+              1. apples
+              2. oranges
+              3. pears
+
+            A [link](http://example.com).
+
+          type: string
+          enum:
+            - OK
+            - WARNING
+            - ERROR
+            - INFO
+          example: OK
+        code:
+          description: An integer code
+          type: integer
+          minimum: 0
+          default: 0
+          example: 0
+        message:
+          title: Status Message
+          description: a message describing the status
+          type: string
+          example: Everything worked ok!
+        field:
+          title: Field
+          description: The field this status applies to, if missing its for the whole call
+          type: string
+          example: UserName
+          default: none
+        docs:
+          default: none
+          title: External Docs
+          description: More information about this code can be found here
+          type: string
+          example:  https://docs.gokabam.com/code/0
